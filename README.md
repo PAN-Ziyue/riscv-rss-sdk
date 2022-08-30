@@ -10,15 +10,15 @@ This SDK will provide great convenience for the following people who:
 * want to test design in Linux environment with modified spike, gcc and other extension in toolchain
 * want to have a overview about embedded system development
 
-This SDK follows the newest Linux Kernel, GNU toolchain and Spike, the functions of each folder in the project are as follows:
+This SDK follows the LTS version Linux Kernel, GNU toolchain and Spike, the functions of each folder in the project are as follows:
 
 |       Folder        |      Description       |   Version   |
 | :-----------------: | :--------------------: | :---------: |
-|    repo/buildroot    |    Build initramfs     |  2021.2.x  |
-|      repo/linux      |      Linux Kernel      |    5.12.0    |
-| repo/riscv-gnu-toolchain | GNU Compiler Toolchain |  gcc 10.2.0 ld 2.36  |
-| repo/riscv-(isa-sim,pk)  | Simulator & Bootloader |    master   |
-| repo/opensbi  | Supervisor / Bootloader |    master   |
+|    repo/buildroot    |    Build initramfs     |  2022.02.4  |
+|      repo/linux      |      Linux Kernel      |    5.15.63    |
+| repo/riscv-gnu-toolchain | GNU Compiler Toolchain |  pre-built  |
+| repo/riscv-(isa-sim,pk)  | Simulator & Bootloader |    1.1   |
+| repo/opensbi  | Supervisor / Bootloader |    1.1   |
 |         conf        |     config for SDK     |             |
 
 ## Quickstart
@@ -36,11 +36,19 @@ git clone https://github.com/riscv-zju/riscv-rss-sdk.git
 sh quickstart.sh
 # For people who want to develop the whole system
 git submodule update --init --recursive --progress
+# For people who want a quickly built linux
+./scripts/getsrc.sh
 
 #	NOTICE: 
 # 		If you already have a riscv toolchain, please notice ** DO NOT SET
 #		 $RISCV and MAKE SURE NO ORIGIN RISCV TOOLCHAIN IN YOUR $PATH **
 make
+
+# for a quickly built linux
+make fw_image -j $(nproc)
+
+# run linux on spike
+spike -m build/opensbi/platform/generic/firmware/fw_payload.elf
 ```
 
 ## Software Development
